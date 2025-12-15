@@ -1,0 +1,98 @@
+from flask import Flask, render_template_string
+
+app = Flask(__name__)
+
+HTML = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🎄 Merry Christmas 🎄</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(#0f2027, #203a43, #2c5364);
+            color: white;
+            text-align: center;
+            font-family: Arial;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .tree {
+            font-size: 100px;
+            cursor: pointer;
+            margin-top: 40px;
+        }
+
+        #message {
+            display: none;
+            margin-top: 20px;
+            font-size: 22px;
+            color: #ffd700;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 16px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎄 Merry Christmas 🎄</h1>
+<p>(Bấm vào cây thông nha 👇)</p>
+
+<div class="tree" onclick="showMessage()">🎄</div>
+
+<div id="message">
+💖 Chúc Nhật jav Giáng Sinh vui vẻ,  
+thi đâu qua đó, tiền rơi như tuyết ❄️  
+<br><br>
+— From your bro 💚
+</div>
+
+<script>
+function showMessage() {
+    document.getElementById("message").style.display = "block";
+}
+
+function createSnowflake() {
+    const snowflake = document.createElement("div");
+    snowflake.className = "snowflake";
+    snowflake.innerHTML = "❄";
+    snowflake.style.left = Math.random() * window.innerWidth + "px";
+    snowflake.style.animationDuration = (2 + Math.random() * 3) + "s";
+    snowflake.style.fontSize = (10 + Math.random() * 20) + "px";
+    document.body.appendChild(snowflake);
+
+    setTimeout(() => snowflake.remove(), 5000);
+}
+
+setInterval(createSnowflake, 200);
+</script>
+
+</body>
+</html>
+"""
+
+@app.route("/")
+def home():
+    return render_template_string(HTML)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+print("App da chạy")
