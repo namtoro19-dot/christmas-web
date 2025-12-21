@@ -34,6 +34,7 @@ HTML = """
             margin-top: 20px;
             font-size: 22px;
             color: #ffd700;
+            white-space: pre-line;
         }
 
         .snowflake {
@@ -61,28 +62,27 @@ HTML = """
 <div id="message"></div>
 
 <script>
-const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,
-thi đâu qua đó, tiền rơi như tuyết ❄️
+const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,  
+thi đâu qua đó, tiền rơi như tuyết ❄️  
 
 — From your bro 💚`;
 
 let index = 0;
-let typingStarted = false;
 
 function showMessage() {
-    if (typingStarted) return; // tránh bấm nhiều lần
-    typingStarted = true;
-
     const messageDiv = document.getElementById("message");
     messageDiv.style.display = "block";
+    messageDiv.innerHTML = "";
+    index = 0;
 
-    const interval = setInterval(() => {
-        messageDiv.innerHTML += text[index] === "\n" ? "<br>" : text[index];
+    const typing = setInterval(() => {
+        messageDiv.textContent += text[index];
         index++;
+
         if (index >= text.length) {
-            clearInterval(interval);
+            clearInterval(typing);
         }
-    }, 60); // tốc độ gõ (ms)
+    }, 50); // tốc độ chữ (ms)
 }
 
 function createSnowflake() {
