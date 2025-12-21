@@ -58,16 +58,31 @@ HTML = """
 
 <div class="tree" onclick="showMessage()">🎄</div>
 
-<div id="message">
-💖 Chúc Minh Anh Giáng Sinh vui vẻ,  
-thi đâu qua đó, tiền rơi như tuyết ❄️  
-<br><br>
-— From your bro 💚
-</div>
+<div id="message"></div>
 
 <script>
+const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,
+thi đâu qua đó, tiền rơi như tuyết ❄️
+
+— From your bro 💚`;
+
+let index = 0;
+let typingStarted = false;
+
 function showMessage() {
-    document.getElementById("message").style.display = "block";
+    if (typingStarted) return; // tránh bấm nhiều lần
+    typingStarted = true;
+
+    const messageDiv = document.getElementById("message");
+    messageDiv.style.display = "block";
+
+    const interval = setInterval(() => {
+        messageDiv.innerHTML += text[index] === "\n" ? "<br>" : text[index];
+        index++;
+        if (index >= text.length) {
+            clearInterval(interval);
+        }
+    }, 60); // tốc độ gõ (ms)
 }
 
 function createSnowflake() {
@@ -84,6 +99,7 @@ function createSnowflake() {
 
 setInterval(createSnowflake, 200);
 </script>
+
 
 </body>
 </html>
