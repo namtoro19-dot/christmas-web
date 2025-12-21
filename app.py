@@ -59,7 +59,7 @@ HTML = """
 <div class="tree" onclick="showMessage()">🎄</div>
 
 <div id="message">
-💖 Chúc Tiến Đạt Giáng Sinh vui vẻ,  
+💖 Chúc Minh Anh Giáng Sinh vui vẻ,  
 thi đâu qua đó, tiền rơi như tuyết ❄️  
 <br><br>
 — From your bro 💚
