@@ -23,16 +23,32 @@ HTML = """
             margin-top: 20px;
         }
 
+        /* ===== CÂY THÔNG ===== */
         .tree-wrapper {
             position: relative;
             margin-top: 40px;
+            display: inline-block;
+        }
+
+        .star {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            color: gold;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px gold; }
+            to { text-shadow: 0 0 20px gold; }
         }
 
         .tree {
             font-size: 110px;
             cursor: pointer;
             transition: transform 0.3s ease, text-shadow 0.3s ease;
-            display: inline-block;
         }
 
         .tree:hover {
@@ -52,9 +68,9 @@ HTML = """
             100% { transform: rotate(0deg); }
         }
 
-        /* Đèn nhấp nháy */
+        /* ===== ĐÈN ===== */
         .lights {
-            font-size: 28px;
+            font-size: 26px;
             margin-top: 10px;
             animation: blink 1s infinite alternate;
         }
@@ -64,6 +80,7 @@ HTML = """
             to { opacity: 1; }
         }
 
+        /* ===== LỜI CHÚC ===== */
         #message {
             display: none;
             margin-top: 25px;
@@ -73,7 +90,7 @@ HTML = """
             text-shadow: 0 0 10px rgba(255,215,0,0.6);
         }
 
-        /* Tuyết bay theo gió */
+        /* ===== TUYẾT ===== */
         .snowflake {
             position: absolute;
             top: -10px;
@@ -91,57 +108,59 @@ HTML = """
 </head>
 
 <body>
+    <h1>🎄 Merry Christmas 🎄</h1>
+    <p>(Bấm vào cây thông nha 👇)</p>
 
-<h1>🎄 Merry Christmas 🎄</h1>
-<p>(Bấm vào cây thông nha 👇)</p>
+    <div class="tree-wrapper">
+        <div class="star">⭐</div>
+        <div class="tree" onclick="showMessage()">🎄</div>
+        <div class="lights">✨ ✨ ✨ ✨ ✨</div>
+    </div>
 
-<div class="tree-wrapper">
-    <div class="tree" onclick="showMessage()">🎄</div>
-    <div class="lights">✨✨✨✨✨</div>
-</div>
+    <div id="message"></div>
 
-<div id="message"></div>
-
-<script>
-const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,
+    <script>
+        const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,
 thi đâu qua đó, tiền rơi như tuyết ❄️
 
 — From your bro 💚`;
 
-let index = 0;
+        let index = 0;
+        let typing = null;
 
-function showMessage() {
-    const tree = document.querySelector(".tree");
-    tree.classList.add("clicked");
-    setTimeout(() => tree.classList.remove("clicked"), 400);
+        function showMessage() {
+            const tree = document.querySelector(".tree");
+            tree.classList.add("clicked");
+            setTimeout(() => tree.classList.remove("clicked"), 400);
 
-    const messageDiv = document.getElementById("message");
-    messageDiv.style.display = "block";
-    messageDiv.innerHTML = "";
-    index = 0;
+            const messageDiv = document.getElementById("message");
+            messageDiv.style.display = "block";
+            messageDiv.innerHTML = "";
+            index = 0;
 
-    const typing = setInterval(() => {
-        messageDiv.innerHTML += text[index];
-        index++;
-        if (index >= text.length) clearInterval(typing);
-    }, 50);
-}
+            if (typing) clearInterval(typing);
 
-function createSnowflake() {
-    const snowflake = document.createElement("div");
-    snowflake.className = "snowflake";
-    snowflake.innerHTML = "❄";
-    snowflake.style.left = Math.random() * window.innerWidth + "px";
-    snowflake.style.animationDuration = (3 + Math.random() * 3) + "s";
-    snowflake.style.fontSize = (10 + Math.random() * 20) + "px";
-    document.body.appendChild(snowflake);
+            typing = setInterval(() => {
+                messageDiv.innerHTML += text[index];
+                index++;
+                if (index >= text.length) clearInterval(typing);
+            }, 50);
+        }
 
-    setTimeout(() => snowflake.remove(), 6000);
-}
+        function createSnowflake() {
+            const snowflake = document.createElement("div");
+            snowflake.className = "snowflake";
+            snowflake.innerHTML = "❄";
+            snowflake.style.left = Math.random() * window.innerWidth + "px";
+            snowflake.style.animationDuration = (3 + Math.random() * 3) + "s";
+            snowflake.style.fontSize = (10 + Math.random() * 20) + "px";
+            document.body.appendChild(snowflake);
 
-setInterval(createSnowflake, 200);
-</script>
+            setTimeout(() => snowflake.remove(), 6000);
+        }
 
+        setInterval(createSnowflake, 200);
+    </script>
 </body>
 </html>
 """
