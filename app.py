@@ -24,10 +24,28 @@ HTML = """
         }
 
         .tree {
-            font-size: 100px;
-            cursor: pointer;
-            margin-top: 40px;
-        }
+    font-size: 110px;
+    cursor: pointer;
+    margin-top: 40px;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.tree:hover {
+    transform: scale(1.1) rotate(-2deg);
+    text-shadow: 0 0 20px #00ffcc;
+}
+
+.tree.clicked {
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
 
         #message {
             display: none;
@@ -58,6 +76,16 @@ HTML = """
 <p>(Bấm vào cây thông nha 👇)</p>
 
 <div class="tree" onclick="showMessage()">🎄</div>
+<div class="lights">✨✨✨✨✨</div>
+.lights {
+    font-size: 30px;
+    animation: blink 1s infinite alternate;
+}
+
+@keyframes blink {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+}
 
 <div id="message"></div>
 
@@ -70,19 +98,20 @@ thi đâu qua đó, tiền rơi như tuyết ❄️
 let index = 0;
 
 function showMessage() {
+    const tree = document.querySelector(".tree");
+    tree.classList.add("clicked");
+    setTimeout(() => tree.classList.remove("clicked"), 400);
+
     const messageDiv = document.getElementById("message");
     messageDiv.style.display = "block";
     messageDiv.innerHTML = "";
     index = 0;
 
     const typing = setInterval(() => {
-        messageDiv.textContent += text[index];
+        messageDiv.innerHTML += text[index];
         index++;
-
-        if (index >= text.length) {
-            clearInterval(typing);
-        }
-    }, 50); // tốc độ chữ (ms)
+        if (index >= text.length) clearInterval(typing);
+    }, 50);
 }
 
 function createSnowflake() {
