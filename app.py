@@ -23,38 +23,57 @@ HTML = """
             margin-top: 20px;
         }
 
+        .tree-wrapper {
+            position: relative;
+            margin-top: 40px;
+        }
+
         .tree {
-    font-size: 110px;
-    cursor: pointer;
-    margin-top: 40px;
-    transition: transform 0.3s ease, text-shadow 0.3s ease;
-}
+            font-size: 110px;
+            cursor: pointer;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            display: inline-block;
+        }
 
-.tree:hover {
-    transform: scale(1.1) rotate(-2deg);
-    text-shadow: 0 0 20px #00ffcc;
-}
+        .tree:hover {
+            transform: scale(1.1) rotate(-2deg);
+            text-shadow: 0 0 25px #00ffcc;
+        }
 
-.tree.clicked {
-    animation: shake 0.4s;
-}
+        .tree.clicked {
+            animation: shake 0.4s;
+        }
 
-@keyframes shake {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(-5deg); }
-    50% { transform: rotate(5deg); }
-    75% { transform: rotate(-5deg); }
-    100% { transform: rotate(0deg); }
-}
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* Đèn nhấp nháy */
+        .lights {
+            font-size: 28px;
+            margin-top: 10px;
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
 
         #message {
             display: none;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 22px;
             color: #ffd700;
             white-space: pre-line;
+            text-shadow: 0 0 10px rgba(255,215,0,0.6);
         }
 
+        /* Tuyết bay theo gió */
         .snowflake {
             position: absolute;
             top: -10px;
@@ -65,33 +84,27 @@ HTML = """
 
         @keyframes fall {
             to {
-                transform: translateY(110vh);
+                transform: translate(100px, 110vh);
             }
         }
     </style>
 </head>
+
 <body>
 
 <h1>🎄 Merry Christmas 🎄</h1>
 <p>(Bấm vào cây thông nha 👇)</p>
 
-<div class="tree" onclick="showMessage()">🎄</div>
-<div class="lights">✨✨✨✨✨</div>
-.lights {
-    font-size: 30px;
-    animation: blink 1s infinite alternate;
-}
-
-@keyframes blink {
-    from { opacity: 0.3; }
-    to { opacity: 1; }
-}
+<div class="tree-wrapper">
+    <div class="tree" onclick="showMessage()">🎄</div>
+    <div class="lights">✨✨✨✨✨</div>
+</div>
 
 <div id="message"></div>
 
 <script>
-const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,  
-thi đâu qua đó, tiền rơi như tuyết ❄️  
+const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,
+thi đâu qua đó, tiền rơi như tuyết ❄️
 
 — From your bro 💚`;
 
@@ -119,16 +132,15 @@ function createSnowflake() {
     snowflake.className = "snowflake";
     snowflake.innerHTML = "❄";
     snowflake.style.left = Math.random() * window.innerWidth + "px";
-    snowflake.style.animationDuration = (2 + Math.random() * 3) + "s";
+    snowflake.style.animationDuration = (3 + Math.random() * 3) + "s";
     snowflake.style.fontSize = (10 + Math.random() * 20) + "px";
     document.body.appendChild(snowflake);
 
-    setTimeout(() => snowflake.remove(), 5000);
+    setTimeout(() => snowflake.remove(), 6000);
 }
 
 setInterval(createSnowflake, 200);
 </script>
-
 
 </body>
 </html>
