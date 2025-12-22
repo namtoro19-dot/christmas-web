@@ -23,64 +23,19 @@ HTML = """
             margin-top: 20px;
         }
 
-        /* ===== CÂY THÔNG ===== */
-        .tree-wrapper {
-            position: relative;
-            margin-top: 40px;
-            display: inline-block;
+        canvas {
+            display: block;
+            margin: 0 auto;
         }
 
-        .star {
-            position: absolute;
-            top: -35px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 30px;
-            color: gold;
-            animation: glow 1.5s infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 5px gold; }
-            to { text-shadow: 0 0 20px gold; }
-        }
-
-        .tree {
-            font-size: 110px;
-            cursor: pointer;
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
-        }
-
-        .tree:hover {
-            transform: scale(1.1) rotate(-2deg);
-            text-shadow: 0 0 25px #00ffcc;
-        }
-
-        .tree.clicked {
-            animation: shake 0.4s;
-        }
-
-        @keyframes shake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-            75% { transform: rotate(-5deg); }
-            100% { transform: rotate(0deg); }
-        }
-
-        /* ===== ĐÈN ===== */
-        .lights {
-            font-size: 26px;
+        #typingTitle {
+            font-size: 32px;
             margin-top: 10px;
-            animation: blink 1s infinite alternate;
+            color: gold;
+            text-shadow: 0 0 15px gold;
+            height: 40px;
         }
 
-        @keyframes blink {
-            from { opacity: 0.3; }
-            to { opacity: 1; }
-        }
-
-        /* ===== LỜI CHÚC ===== */
         #message {
             display: none;
             margin-top: 25px;
@@ -90,7 +45,6 @@ HTML = """
             text-shadow: 0 0 10px rgba(255,215,0,0.6);
         }
 
-        /* ===== TUYẾT ===== */
         .snowflake {
             position: absolute;
             top: -10px;
@@ -106,6 +60,98 @@ HTML = """
         }
     </style>
 </head>
+<body>
+
+<h1>🎄 Merry Christmas 🎄</h1>
+
+<canvas id="treeCanvas" width="300" height="400"></canvas>
+<div id="typingTitle"></div>
+
+<div id="message">
+💖 Chúc Hương Giang Giáng Sinh vui vẻ,  
+thi đâu qua đó, tiền rơi như tuyết ❄️  
+
+— From your bro 💚
+</div>
+
+<script>
+const canvas = document.getElementById("treeCanvas");
+const ctx = canvas.getContext("2d");
+
+let t = 0;
+let drawing = true;
+
+// Vẽ cây thông bằng đường zigzag
+function drawTree() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "#00ffcc";
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = "#00ffcc";
+
+    ctx.beginPath();
+    ctx.moveTo(150, 350);
+
+    for (let y = 350; y > 50; y -= 10) {
+        let x = 150 + Math.sin((350 - y + t) * 0.1) * (350 - y) * 0.08;
+        ctx.lineTo(x, y);
+    }
+
+    ctx.stroke();
+
+    t += 2;
+    if (t < 300) {
+        requestAnimationFrame(drawTree);
+    } else {
+        drawStar();
+        typeTitle();
+        document.getElementById("message").style.display = "block";
+    }
+}
+
+// Vẽ ngôi sao
+function drawStar() {
+    ctx.fillStyle = "gold";
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = "gold";
+    ctx.font = "30px Arial";
+    ctx.fillText("⭐", 135, 40);
+}
+
+// Gõ chữ Merry Christmas
+const titleText = "✨ Merry Christmas ✨";
+let titleIndex = 0;
+
+function typeTitle() {
+    const el = document.getElementById("typingTitle");
+    const typing = setInterval(() => {
+        el.textContent += titleText[titleIndex];
+        titleIndex++;
+        if (titleIndex >= titleText.length) clearInterval(typing);
+    }, 80);
+}
+
+// Tuyết
+function createSnowflake() {
+    const snowflake = document.createElement("div");
+    snowflake.className = "snowflake";
+    snowflake.innerHTML = "❄";
+    snowflake.style.left = Math.random() * window.innerWidth + "px";
+    snowflake.style.animationDuration = (3 + Math.random() * 3) + "s";
+    snowflake.style.fontSize = (10 + Math.random() * 20) + "px";
+    document.body.appendChild(snowflake);
+
+    setTimeout(() => snowflake.remove(), 6000);
+}
+
+setInterval(createSnowflake, 200);
+
+// Bắt đầu vẽ khi load
+drawTree();
+</script>
+
+</body>
+</html>
 
 <body>
     <h1>🎄 Merry Christmas 🎄</h1>
@@ -113,8 +159,37 @@ HTML = """
 
     <div class="tree-wrapper">
         <div class="star">⭐</div>
-        <div class="tree" onclick="showMessage()">🎄</div>
-        <div class="lights">✨ ✨ ✨ ✨ ✨</div>
+        <div class="tree-wrapper" onclick="showMessage()">
+
+<svg width="300" height="420" viewBox="0 0 300 420">
+    <!-- Cây thông -->
+    <path id="treePath"
+        d="M150 20
+           L90 140
+           L120 140
+           L70 260
+           L110 260
+           L50 380
+           L250 380
+           L190 260
+           L230 260
+           L180 140
+           L210 140
+           Z"
+        fill="none"
+        stroke="#00ffcc"
+        stroke-width="4"
+        stroke-linecap="round"
+    />
+
+    <!-- Ngôi sao -->
+    <text id="star" x="150" y="35" text-anchor="middle" font-size="32">⭐</text>
+</svg>
+
+<div id="title">Merry Christmas 🎄</div>
+
+</div>
+
     </div>
 
     <div id="message"></div>
