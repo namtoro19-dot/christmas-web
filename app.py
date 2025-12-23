@@ -125,10 +125,8 @@ HTML = """
         Hi bestie, Merry Christmas! 🎄
 Wishing you a warm, peaceful Christmas filled with joy and small happy moments.
 May the last days of this year be gentle to you, and may the new year welcome you with hope, strength, and many good things ahead.
-
 I’m really thankful for everything we’ve shared so far.
 And good luck with your exams — stay calm, stay confident, and trust yourself. You’ve already done so well.
-
 From your best friend,
 Belgium 💚`;
 
