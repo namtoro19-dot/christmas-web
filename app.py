@@ -130,7 +130,7 @@ I’m really thankful for everything we’ve shared so far.
 And good luck with your exams — stay calm, stay confident, and trust yourself. You’ve already done so well.
 
 From your best friend,
-Belgium 💚;
+Belgium 💚`;
 
         let index = 0;
         let typing = null;
