@@ -5,68 +5,138 @@ app = Flask(__name__)
 
 HTML = """
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>🎄 Merry Christmas 🎄</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            background: linear-gradient(#0f2027, #203a43, #2c5364);
-            color: white;
-            text-align: center;
-            font-family: Arial;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<title>🎄 Merry Christmas 🎄</title>
 
-        h1 {
-            margin-top: 20px;
-        }
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(#0f2027, #203a43, #2c5364);
+    color: white;
+    text-align: center;
+    font-family: Arial;
+    overflow: hidden;
+}
 
-        canvas {
-            display: block;
-            margin: 0 auto;
-            cursor: pointer;
-        }
+/* ===== TITLE ===== */
+h1 {
+    margin-top: 15px;
+}
 
-        #title {
-            font-size: 32px;
-            color: gold;
-            margin-top: 10px;
-            text-shadow: 0 0 15px gold;
-            min-height: 40px;
-        }
+/* ===== TREE SVG ===== */
+svg {
+    width: 300px;
+    height: 420px;
+    margin-top: 20px;
+    cursor: pointer;
+}
 
-        #message {
-            display: none;
-            margin-top: 25px;
-            font-size: 22px;
-            color: #ffd700;
-            white-space: pre-line;
-            text-shadow: 0 0 10px rgba(255,215,0,0.6);
-        }
+/* Viền cây */
+#treePath {
+    fill: none;
+    stroke: #00ffcc;
+    stroke-width: 4;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 10px #00ffcc);
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawTree 4s ease forwards;
+}
 
-        .snowflake {
-            position: absolute;
-            top: -10px;
-            color: white;
-            font-size: 16px;
-            animation: fall linear infinite;
-        }
+/* Vẽ cây */
+@keyframes drawTree {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
 
-        @keyframes fall {
-            to {
-                transform: translate(120px, 110vh);
-            }
-        }
-    </style>
+/* Ngôi sao */
+#star {
+    opacity: 0;
+    filter: drop-shadow(0 0 20px gold);
+    animation: starGlow 1.5s infinite alternate;
+    animation-delay: 4s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes starGlow {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.15); opacity: 1; }
+}
+
+/* ===== MERRY CHRISTMAS ===== */
+#title {
+    margin-top: 10px;
+    font-size: 32px;
+    color: gold;
+    text-shadow: 0 0 15px gold;
+    opacity: 0;
+    animation: showTitle 2s ease forwards;
+    animation-delay: 4.5s;
+}
+
+@keyframes showTitle {
+    to { opacity: 1; }
+}
+
+/* ===== MESSAGE ===== */
+#message {
+    display: none;
+    margin-top: 20px;
+    font-size: 22px;
+    color: #ffd700;
+    white-space: pre-line;
+    text-shadow: 0 0 10px rgba(255,215,0,0.6);
+}
+
+/* ===== SNOW ===== */
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: white;
+    font-size: 16px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translate(120px, 110vh);
+    }
+}
+</style>
 </head>
+
 <body>
 
 <h1>🎄 Merry Christmas 🎄</h1>
 
-<canvas id="treeCanvas" width="300" height="420"></canvas>
-<div id="title"></div>
+<!-- ===== SVG TREE ===== -->
+<svg viewBox="0 0 300 420" onclick="showMessage()">
+
+    <!-- Star -->
+    <text id="star" x="150" y="40" text-anchor="middle" font-size="32">⭐</text>
+
+    <!-- Tree outline (TikTok style) -->
+    <path id="treePath"
+        d="
+        M150 380
+        L90 280
+        L120 280
+        L70 180
+        L120 180
+        L150 100
+        L180 180
+        L230 180
+        L180 280
+        L210 280
+        Z"
+    />
+</svg>
+
+<div id="title">✨ Merry Christmas ✨</div>
 
 <div id="message">
 💖 Chúc Hương Giang Giáng Sinh vui vẻ,  
@@ -76,79 +146,12 @@ thi đâu qua đó, tiền rơi như tuyết ❄️
 </div>
 
 <script>
-const canvas = document.getElementById("treeCanvas");
-const ctx = canvas.getContext("2d");
-
-// Các điểm viền cây thông (vẽ như video TikTok)
-const path = [
-    [150, 380],
-    [80, 260], [120, 260],
-    [60, 140], [120, 140],
-    [150, 60],
-    [180, 140], [240, 140],
-    [180, 260], [220, 260],
-    [150, 380]
-];
-
-let progress = 0;
-let finished = false;
-
-function drawTree() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.strokeStyle = "#00ffcc";
-    ctx.lineWidth = 3;
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = "#00ffcc";
-
-    ctx.beginPath();
-    ctx.moveTo(path[0][0], path[0][1]);
-
-    for (let i = 1; i < progress && i < path.length; i++) {
-        ctx.lineTo(path[i][0], path[i][1]);
-    }
-
-    ctx.stroke();
-
-    if (progress < path.length) {
-        progress += 0.05;
-        requestAnimationFrame(drawTree);
-    } else if (!finished) {
-        drawStar();
-        typeTitle();
-        finished = true;
-    }
-}
-
-// Vẽ sao trên đỉnh
-function drawStar() {
-    ctx.font = "32px Arial";
-    ctx.fillStyle = "gold";
-    ctx.shadowBlur = 25;
-    ctx.shadowColor = "gold";
-    ctx.fillText("⭐", 135, 45);
-}
-
-// Gõ chữ Merry Christmas
-const titleText = "✨ Merry Christmas ✨";
-let titleIndex = 0;
-
-function typeTitle() {
-    const el = document.getElementById("title");
-    const typing = setInterval(() => {
-        el.textContent += titleText[titleIndex];
-        titleIndex++;
-        if (titleIndex >= titleText.length) clearInterval(typing);
-    }, 80);
-}
-
-// Click cây → hiện lời chúc
-canvas.addEventListener("click", () => {
-    if (!finished) return;
+/* Click hiện lời chúc */
+function showMessage() {
     document.getElementById("message").style.display = "block";
-});
+}
 
-// Tuyết bay
+/* Snow */
 function snow() {
     const s = document.createElement("div");
     s.className = "snowflake";
@@ -160,9 +163,6 @@ function snow() {
     setTimeout(() => s.remove(), 6000);
 }
 setInterval(snow, 200);
-
-// Start animation
-drawTree();
 </script>
 
 </body>
@@ -176,3 +176,4 @@ def home():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
