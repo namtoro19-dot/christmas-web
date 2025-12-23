@@ -5,154 +5,162 @@ app = Flask(__name__)
 
 HTML = """
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>🎄 Merry Christmas 🎄</title>
+    <title>🎄 Merry Christmas 🎄</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(#0f2027, #203a43, #2c5364);
+            color: white;
+            text-align: center;
+            font-family: Arial;
+            overflow: hidden;
+        }
 
-<style>
-body {
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(#0f2027, #203a43, #2c5364);
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    overflow: hidden;
-}
+        h1 {
+            margin-top: 20px;
+        }
 
-h1 {
-    margin-top: 20px;
-}
+        /* ===== CÂY THÔNG ===== */
+        .tree-wrapper {
+            position: relative;
+            margin-top: 40px;
+            display: inline-block;
+        }
 
-svg {
-    display: block;
-    margin: 0 auto;
-}
+        .star {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            color: gold;
+            animation: glow 1.5s infinite alternate;
+        }
 
-#treePath {
-    fill: none;
-    stroke: #00ffcc;
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    filter: drop-shadow(0 0 10px #00ffcc);
-    stroke-dasharray: 1200;
-    stroke-dashoffset: 1200;
-    animation: drawTree 4s ease-out forwards;
-}
+        @keyframes glow {
+            from { text-shadow: 0 0 5px gold; }
+            to { text-shadow: 0 0 20px gold; }
+        }
 
-@keyframes drawTree {
-    to { stroke-dashoffset: 0; }
-}
+        .tree {
+            font-size: 110px;
+            cursor: pointer;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+        }
 
-#star {
-    opacity: 0;
-    filter: drop-shadow(0 0 20px gold);
-    animation: showStar 1s ease forwards;
-    animation-delay: 4s;
-}
+        .tree:hover {
+            transform: scale(1.1) rotate(-2deg);
+            text-shadow: 0 0 25px #00ffcc;
+        }
 
-@keyframes showStar {
-    to { opacity: 1; }
-}
+        .tree.clicked {
+            animation: shake 0.4s;
+        }
 
-#title {
-    margin-top: 10px;
-    font-size: 32px;
-    color: gold;
-    text-shadow: 0 0 15px gold;
-    min-height: 40px;
-}
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
 
-#message {
-    display: none;
-    margin-top: 20px;
-    font-size: 22px;
-    color: #ffd700;
-    white-space: pre-line;
-    text-shadow: 0 0 10px rgba(255,215,0,.6);
-}
+        /* ===== ĐÈN ===== */
+        .lights {
+            font-size: 26px;
+            margin-top: 10px;
+            animation: blink 1s infinite alternate;
+        }
 
-/* Snow */
-.snowflake {
-    position: absolute;
-    top: -10px;
-    color: white;
-    animation: fall linear infinite;
-}
+        @keyframes blink {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
 
-@keyframes fall {
-    to { transform: translate(120px, 110vh); }
-}
-</style>
+        /* ===== LỜI CHÚC ===== */
+        #message {
+            display: none;
+            margin-top: 25px;
+            font-size: 22px;
+            color: #ffd700;
+            white-space: pre-line;
+            text-shadow: 0 0 10px rgba(255,215,0,0.6);
+        }
+
+        /* ===== TUYẾT ===== */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 16px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translate(100px, 110vh);
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <h1>🎄 Merry Christmas 🎄</h1>
+    <p>(Bấm vào cây thông nha 👇)</p>
 
-<h1>🎄 Merry Christmas 🎄</h1>
+    <div class="tree-wrapper">
+        <div class="star">⭐</div>
+        <div class="tree" onclick="showMessage()">🎄</div>
+        <div class="lights">✨ ✨ ✨ ✨ ✨</div>
+    </div>
 
-<svg width="300" height="420" viewBox="0 0 300 420">
-    <!-- CÂY THÔNG -->
-    <path id="treePath"
-        d="M150 380
-           L90 260
-           L120 260
-           L70 140
-           L120 140
-           L150 60
-           L180 140
-           L230 140
-           L180 260
-           L210 260
-           Z" />
+    <div id="message"></div>
 
-    <!-- SAO -->
-    <text id="star" x="150" y="45" text-anchor="middle" font-size="32">⭐</text>
-</svg>
+    <script>
+        const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,
+thi đâu qua đó, tiền rơi như tuyết ❄️
 
-<div id="title"></div>
+— From your bro 💚`;
 
-<div id="message">
-💖 Chúc Hương Giang Giáng Sinh vui vẻ,  
-thi đâu qua đó, tiền rơi như tuyết ❄️  
+        let index = 0;
+        let typing = null;
 
-— From your bro 💚
-</div>
+        function showMessage() {
+            const tree = document.querySelector(".tree");
+            tree.classList.add("clicked");
+            setTimeout(() => tree.classList.remove("clicked"), 400);
 
-<script>
-// Typing title
-const titleText = "✨ Merry Christmas ✨";
-let i = 0;
-const titleEl = document.getElementById("title");
+            const messageDiv = document.getElementById("message");
+            messageDiv.style.display = "block";
+            messageDiv.innerHTML = "";
+            index = 0;
 
-setTimeout(() => {
-    const typing = setInterval(() => {
-        titleEl.textContent += titleText[i];
-        i++;
-        if (i >= titleText.length) clearInterval(typing);
-    }, 80);
-}, 4200);
+            if (typing) clearInterval(typing);
 
-// Click show message
-document.querySelector("svg").addEventListener("click", () => {
-    document.getElementById("message").style.display = "block";
-});
+            typing = setInterval(() => {
+                messageDiv.innerHTML += text[index];
+                index++;
+                if (index >= text.length) clearInterval(typing);
+            }, 50);
+        }
 
-// Snow
-function snow() {
-    const s = document.createElement("div");
-    s.className = "snowflake";
-    s.textContent = "❄";
-    s.style.left = Math.random() * window.innerWidth + "px";
-    s.style.fontSize = 10 + Math.random() * 20 + "px";
-    s.style.animationDuration = 3 + Math.random() * 3 + "s";
-    document.body.appendChild(s);
-    setTimeout(() => s.remove(), 6000);
-}
-setInterval(snow, 200);
-</script>
+        function createSnowflake() {
+            const snowflake = document.createElement("div");
+            snowflake.className = "snowflake";
+            snowflake.innerHTML = "❄";
+            snowflake.style.left = Math.random() * window.innerWidth + "px";
+            snowflake.style.animationDuration = (3 + Math.random() * 3) + "s";
+            snowflake.style.fontSize = (10 + Math.random() * 20) + "px";
+            document.body.appendChild(snowflake);
 
+            setTimeout(() => snowflake.remove(), 6000);
+        }
+
+        setInterval(createSnowflake, 200);
+    </script>
 </body>
 </html>
 """
