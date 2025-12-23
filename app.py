@@ -46,7 +46,7 @@ HTML = """
         }
 
         .tree {
-            font-size: 180px;
+            font-size: 165px;
             cursor: pointer;
             filter: drop-shadow(0 0 25px rgba(0,255,200,0.6));
             transition: transform 0.3s ease, text-shadow 0.3s ease;
@@ -121,12 +121,14 @@ HTML = """
     <div id="message"></div>
 
     <script>
-        const text = `To Huong Giang💖
+        const text = `To Huong Giang🐰
         Hi bestie, Merry Christmas! 🎄
 Wishing you a warm, peaceful Christmas filled with joy and small happy moments.
-May the last days of this year be gentle to you, and may the new year welcome you with hope, strength, and many good things ahead.
+May the last days of this year be gentle to you, and may the new year welcome you with hope, strength, and many good things ahead.🎁
+
 I’m really thankful for everything we’ve shared so far.
-And good luck with your exams — stay calm, stay confident, and trust yourself. You’ve already done so well.
+And good luck with your exams — stay calm, stay confident, and trust yourself. You’ve already done so well.❤️‍🔥
+
 From your best friend,
 Belgium 💚`;
 
