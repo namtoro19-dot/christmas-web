@@ -5,9 +5,11 @@ app = Flask(__name__)
 
 HTML = """
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+    <meta charset="UTF-8">
     <title>🎄 Merry Christmas 🎄</title>
+
     <style>
         body {
             margin: 0;
@@ -15,82 +17,81 @@ HTML = """
             background: linear-gradient(#0f2027, #203a43, #2c5364);
             color: white;
             text-align: center;
-            font-family: Arial;
+            font-family: Arial, sans-serif;
             overflow: hidden;
         }
 
         h1 {
             margin-top: 20px;
+            font-size: 42px;
         }
 
-        /* ===== CÂY THÔNG ===== */
-        .tree-wrapper {
-            position: relative;
-            margin-top: 40px;
-            display: inline-block;
+        .hint {
+            opacity: 0.8;
+            margin-bottom: 10px;
         }
 
-        .star {
-            position: absolute;
-            top: -35px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 30px;
-            color: gold;
-            animation: glow 1.5s infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 5px gold; }
-            to { text-shadow: 0 0 20px gold; }
-        }
-
+        /* ===== TREE ===== */
         .tree {
-            font-size: 110px;
+            font-size: 180px; /* PHÓNG TO CÂY */
             cursor: pointer;
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            display: inline-block;
+            position: relative;
+            filter: drop-shadow(0 0 30px rgba(0,255,200,0.6));
+            transition: transform 0.3s ease;
         }
 
         .tree:hover {
-            transform: scale(1.1) rotate(-2deg);
-            text-shadow: 0 0 25px #00ffcc;
+            transform: scale(1.05);
         }
 
-        .tree.clicked {
-            animation: shake 0.4s;
+        /* ===== STAR ===== */
+        .star {
+            position: absolute;
+            top: -85px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 48px;
+            color: gold;
+            animation: starGlow 1.5s infinite alternate;
         }
 
-        @keyframes shake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-            75% { transform: rotate(-5deg); }
-            100% { transform: rotate(0deg); }
+        @keyframes starGlow {
+            from { text-shadow: 0 0 10px gold; }
+            to { text-shadow: 0 0 35px gold; }
         }
 
-        /* ===== ĐÈN ===== */
+        /* ===== LIGHTS ===== */
         .lights {
-            font-size: 26px;
-            margin-top: 10px;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .light {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
             animation: blink 1s infinite alternate;
         }
 
         @keyframes blink {
-            from { opacity: 0.3; }
+            from { opacity: 0.4; }
             to { opacity: 1; }
         }
 
-        /* ===== LỜI CHÚC ===== */
+        /* ===== MESSAGE ===== */
         #message {
             display: none;
-            margin-top: 25px;
-            font-size: 22px;
+            margin-top: 30px;
+            font-size: 24px;
             color: #ffd700;
             white-space: pre-line;
-            text-shadow: 0 0 10px rgba(255,215,0,0.6);
+            text-shadow: 0 0 12px rgba(255,215,0,0.6);
         }
 
-        /* ===== TUYẾT ===== */
+        /* ===== SNOW ===== */
         .snowflake {
             position: absolute;
             top: -10px;
@@ -101,66 +102,76 @@ HTML = """
 
         @keyframes fall {
             to {
-                transform: translate(100px, 110vh);
+                transform: translate(120px, 110vh);
             }
         }
     </style>
 </head>
 
 <body>
-    <h1>🎄 Merry Christmas 🎄</h1>
-    <p>(Bấm vào cây thông nha 👇)</p>
 
-    <div class="tree-wrapper">
-        <div class="star">⭐</div>
-        <div class="tree" onclick="showMessage()">🎄</div>
-        <div class="lights">✨ ✨ ✨ ✨ ✨</div>
-    </div>
+<h1>🎄 Merry Christmas 🎄</h1>
+<div class="hint">(Bấm vào cây thông nha 👇)</div>
 
-    <div id="message"></div>
+<div class="tree" onclick="showMessage()">
+    <div class="star">⭐</div>
+    🎄
+    <div class="lights" id="lights"></div>
+</div>
 
-    <script>
-        const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,
-thi đâu qua đó, tiền rơi như tuyết ❄️
+<div id="message">
+💖 Chúc Hương Giang Giáng Sinh vui vẻ,  
+thi đâu qua đó, tiền rơi như tuyết ❄️  
 
-— From your bro 💚`;
+— From your bro 💚
+</div>
 
-        let index = 0;
-        let typing = null;
+<script>
+/* ===== LIGHT COLORS ===== */
+const colors = ["#ff3b3b", "#ffd700", "#00ffcc", "#ff66cc"];
 
-        function showMessage() {
-            const tree = document.querySelector(".tree");
-            tree.classList.add("clicked");
-            setTimeout(() => tree.classList.remove("clicked"), 400);
+const lightsContainer = document.getElementById("lights");
 
-            const messageDiv = document.getElementById("message");
-            messageDiv.style.display = "block";
-            messageDiv.innerHTML = "";
-            index = 0;
+/* CREATE LIGHTS */
+for (let i = 0; i < 14; i++) {
+    const light = document.createElement("div");
+    light.className = "light";
 
-            if (typing) clearInterval(typing);
+    light.style.left = Math.random() * 100 + "%";
+    light.style.top = Math.random() * 100 + "%";
+    light.style.background = colors[Math.floor(Math.random() * colors.length)];
+    light.style.animationDuration = (0.5 + Math.random()) + "s";
 
-            typing = setInterval(() => {
-                messageDiv.innerHTML += text[index];
-                index++;
-                if (index >= text.length) clearInterval(typing);
-            }, 50);
-        }
+    lightsContainer.appendChild(light);
+}
 
-        function createSnowflake() {
-            const snowflake = document.createElement("div");
-            snowflake.className = "snowflake";
-            snowflake.innerHTML = "❄";
-            snowflake.style.left = Math.random() * window.innerWidth + "px";
-            snowflake.style.animationDuration = (3 + Math.random() * 3) + "s";
-            snowflake.style.fontSize = (10 + Math.random() * 20) + "px";
-            document.body.appendChild(snowflake);
+/* RANDOM COLOR CHANGE */
+setInterval(() => {
+    document.querySelectorAll(".light").forEach(light => {
+        light.style.background = colors[Math.floor(Math.random() * colors.length)];
+    });
+}, 500);
 
-            setTimeout(() => snowflake.remove(), 6000);
-        }
+/* SHOW MESSAGE */
+function showMessage() {
+    document.getElementById("message").style.display = "block";
+}
 
-        setInterval(createSnowflake, 200);
-    </script>
+/* SNOW */
+function snow() {
+    const s = document.createElement("div");
+    s.className = "snowflake";
+    s.innerHTML = "❄";
+    s.style.left = Math.random() * window.innerWidth + "px";
+    s.style.fontSize = 10 + Math.random() * 20 + "px";
+    s.style.animationDuration = 3 + Math.random() * 3 + "s";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 6000);
+}
+
+setInterval(snow, 180);
+</script>
+
 </body>
 </html>
 """
