@@ -48,6 +48,7 @@ HTML = """
         .tree {
             font-size: 180px;
             cursor: pointer;
+            filter: drop-shadow(0 0 25px rgba(0,255,200,0.6));
             transition: transform 0.3s ease, text-shadow 0.3s ease;
         }
 
