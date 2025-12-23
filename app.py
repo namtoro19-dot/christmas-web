@@ -110,7 +110,7 @@ HTML = """
 
 <body>
     <h1>🎄 Merry Christmas 🎄</h1>
-    <p>(Bấm vào cây thông nha 👇)</p>
+    <p>(Bấm vào cây thông nha 🎁)</p>
 
     <div class="tree-wrapper">
         <div class="star">⭐</div>
@@ -121,10 +121,16 @@ HTML = """
     <div id="message"></div>
 
     <script>
-        const text = `💖 Chúc Hương Giang Giáng Sinh vui vẻ,
-thi đâu qua đó, tiền rơi như tuyết ❄️
+        const text = `To Huong Giang💖
+        Hi bestie, Merry Christmas! 🎄
+Wishing you a warm, peaceful Christmas filled with joy and small happy moments.
+May the last days of this year be gentle to you, and may the new year welcome you with hope, strength, and many good things ahead.
 
-— From your bro 💚`;
+I’m really thankful for everything we’ve shared so far.
+And good luck with your exams — stay calm, stay confident, and trust yourself. You’ve already done so well.
+
+From your best friend,
+Belgium 💚;
 
         let index = 0;
         let typing = null;
