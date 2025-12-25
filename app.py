@@ -108,7 +108,7 @@ HTML = """
         }
         /* ===== SANTA ===== */
 #santa {
-    position: fixed;
+    position: absolute;
     bottom: 40px;
     right: -120px;            /* ban đầu ở ngoài màn hình */
     font-size: 90px;
@@ -119,7 +119,7 @@ HTML = """
 }
 
 #santa.show {
-    right: 20px;              /* chạy vào màn hình */
+    right: -100px;              /* chạy vào màn hình */
     opacity: 1;
 }
 
@@ -144,9 +144,9 @@ HTML = """
         <div class="lights">✨ ✨ ✨ ✨ ✨</div>
     </div>
 
-    <div id="message"></div>
+    <div id="message" style="position: relative;">
     <div id="santa">🎅</div>
-
+    </div>
 
     <script>
         const text = `To Huong Giang🐰
@@ -194,6 +194,10 @@ Belgium 💚`;
             document.body.appendChild(snowflake);
 
             setTimeout(() => snowflake.remove(), 6000);
+            setTimeout(() => {
+                document.getElementById("santa").classList.add("show");
+            }, 800);
+
         }
 
         setInterval(createSnowflake, 200);
