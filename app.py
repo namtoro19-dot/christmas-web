@@ -154,7 +154,7 @@ HTML = """
 Chúc bạn một mùa Giáng Sinh ấm áp, an lành, tràn ngập niềm vui và những khoảnh khắc hạnh phúc nhỏ bé nha.
 Mong những ngày tháng khó khăn mệt mỏi sẽ qua đi, và năm mới sẽ chào đón bạn với hy vọng, sức mạnh và nhiều điều tốt đẹp phía trước.🎁
 
-Mình rất biết ơn khi được đồng hành, chia sẻ cùng với bạn cho đến nay!
+Mình rất biết ơn khi được đồng hành, chia sẻ cùng với bạn cho đến nay! Cùng tiếp tục cố gắng trong những hành trình sắp tới nha!💪
 Chúc bạn may mắn với kỳ thi học phần, hãy bình tĩnh, tin tưởng vào bản thân. Đến được đây bạn đã làm rất tốt rồi.❤️‍🔥
 
 From your partner,
