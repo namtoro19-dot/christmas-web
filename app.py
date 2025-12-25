@@ -106,6 +106,31 @@ HTML = """
                 transform: translate(100px, 110vh);
             }
         }
+        /* ===== SANTA ===== */
+#santa {
+    position: fixed;
+    bottom: 40px;
+    right: -120px;            /* ban đầu ở ngoài màn hình */
+    font-size: 90px;
+    opacity: 0;
+    transition: right 1.2s ease, opacity 1s ease;
+    animation: wave 1s infinite;
+    pointer-events: none;
+}
+
+#santa.show {
+    right: 20px;              /* chạy vào màn hình */
+    opacity: 1;
+}
+
+@keyframes wave {
+    0%   { transform: rotate(0deg); }
+    25%  { transform: rotate(8deg); }
+    50%  { transform: rotate(0deg); }
+    75%  { transform: rotate(-8deg); }
+    100% { transform: rotate(0deg); }
+}
+
     </style>
 </head>
 
@@ -120,6 +145,8 @@ HTML = """
     </div>
 
     <div id="message"></div>
+    <div id="santa">🎅</div>
+
 
     <script>
         const text = `To Huong Giang🐰
@@ -130,7 +157,7 @@ May the last days of this year be gentle to you, and may the new year welcome yo
 I’m really thankful for everything we’ve shared so far.
 And good luck with your exams — stay calm, stay confident, and trust yourself. You’ve already done so well.❤️‍🔥
 
-From your best friend,
+From your partner,
 Belgium 💚`;
 
         let index = 0;
@@ -153,6 +180,8 @@ Belgium 💚`;
                 index++;
                 if (index >= text.length) clearInterval(typing);
             }, 50);
+            const santa = document.getElementById("santa");
+            santa.classList.add("show");
         }
 
         function createSnowflake() {
