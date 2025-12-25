@@ -144,18 +144,18 @@ HTML = """
         <div class="lights">✨ ✨ ✨ ✨ ✨</div>
     </div>
 
-    <div id="message" style="position: relative;">
+    <div id="message"></div>
     <div id="santa">🎅</div>
-    </div>
+
 
     <script>
-        const text = `To Huong Giang🐰
+        const text = `To Hương Giang🐰
         Hi bestie, Merry Christmas! 🎄
-Wishing you a warm, peaceful Christmas filled with joy and small happy moments.
-May the last days of this year be gentle to you, and may the new year welcome you with hope, strength, and many good things ahead.🎁
+Chúc bạn một mùa Giáng Sinh ấm áp, an lành, tràn ngập niềm vui và những khoảnh khắc hạnh phúc nhỏ bé nha.
+Mong những ngày tháng khó khăn mệt mỏi sẽ qua đi, và năm mới sẽ chào đón bạn với hy vọng, sức mạnh và nhiều điều tốt đẹp phía trước.🎁
 
-I’m really thankful for everything we’ve shared so far.
-And good luck with your exams — stay calm, stay confident, and trust yourself. You’ve already done so well.❤️‍🔥
+Mình rất biết ơn khi được đồng hành, chia sẻ cùng với bạn cho đến nay!
+Chúc bạn may mắn với kỳ thi học phần, hãy bình tĩnh, tin tưởng vào bản thân. Đến được đây bạn đã làm rất tốt rồi.❤️‍🔥
 
 From your partner,
 Belgium 💚`;
@@ -194,10 +194,6 @@ Belgium 💚`;
             document.body.appendChild(snowflake);
 
             setTimeout(() => snowflake.remove(), 6000);
-            setTimeout(() => {
-                document.getElementById("santa").classList.add("show");
-            }, 800);
-
         }
 
         setInterval(createSnowflake, 200);
