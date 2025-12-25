@@ -119,7 +119,7 @@ HTML = """
 }
 
 #santa.show {
-    right: -100px;              /* chạy vào màn hình */
+    right: 20px;              /* chạy vào màn hình */
     opacity: 1;
 }
 
